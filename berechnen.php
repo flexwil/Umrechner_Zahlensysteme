@@ -34,8 +34,17 @@ echo "Das Ergebnis beträgt: ";
 $zahl1 = $_POST["eingabe"];    
 $zahl2 = $_POST["EingabeSys"];
 
-$zzw = $zahl1/2;
+do {
+    $zzw = intdiv($zahl1, 2);
+    $zm = $zahl1%2;
+}
+
+
+$zzw = intdiv($zahl1, 2);
 $zm = $zahl1%2;
+
+$Ausgabebin = array();
+
 
 echo $zzw . "<br>";
 echo $zm;
