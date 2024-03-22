@@ -18,7 +18,7 @@
     </select>
     <br>
     <br>
-    <label for="AusgabeSys">In Welches System soll umgewandelt werden?</label>
+    <label for="AusgabeSys">In Welches System soll umgewandelt werden?</label><br>
     <input type="checkbox" id="nachbin">Binär<br>
     <input type="checkbox" id="nachdez">Dezimal<br>
     <input type="checkbox" id="nachhex">Hexadezimal<br>
@@ -32,20 +32,20 @@
 <?php
 echo "Das Ergebnis beträgt: ";
 $zahl1 = $_POST["eingabe"];    
-$zahl2 = $_POST["EingabeSys"];
 
-do {
-    $zzw = intdiv($zahl1, 2);
-    $zm = $zahl1%2;
+$i = 0;
+$zzw = $zahl1;
+while ($zzw > 0) {
+    $Rest = $zzw%2;
+    $zzw = intdiv($zzw, 2);
+    $Rechnebin[$i] = $Rest;
+    $i = $i + 1;
+}
+
+$Ausgabebin = array_reverse($Rechnebin);
+for($i = 0; $i < count($Ausgabebin); $i++) {
+    echo $Ausgabebin[$i];
 }
 
 
-$zzw = intdiv($zahl1, 2);
-$zm = $zahl1%2;
-
-$Ausgabebin = array();
-
-
-echo $zzw . "<br>";
-echo $zm;
 ?>
