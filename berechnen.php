@@ -33,8 +33,9 @@
 
 $zahl1 = $_POST["eingabe"];    
 $i = 0;
+$zahl = 0;
 
-// Dezimalumrechnung
+// Eingabe Dezimal
 if($_POST["EingabeSys"] === "dez"){
 
     // Umrechnung nach Binär
@@ -113,5 +114,17 @@ if($_POST["EingabeSys"] === "dez"){
     }
 }
 
+// Eingabe Binär
+if($_POST["EingabeSys"] === "bin"){
+    $bin = str_split($zahl1);
+    $bin = array_reverse($bin);
 
+    for($i = 0; $i < count($bin); $i++) {
+        $zwischen = $bin[$i]*2**$i;
+        echo $zwischen.", ";
+        echo $zahl = $zahl+$zwischen;
+        echo "<br>";
+}
+
+}
 ?>
