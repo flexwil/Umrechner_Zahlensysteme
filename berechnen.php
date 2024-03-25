@@ -27,6 +27,7 @@
     <input value="Berechnen" type="submit">
 </form>
 </body>
+<p>test</p>
 </html>
 
 <?php
