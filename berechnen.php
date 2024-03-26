@@ -1,5 +1,10 @@
+<!DOCTYPE html>
 <html>
-<head><title>Umrechner</title></head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale1.0">    
+    <title>Umrechner</title>
+</head>
 <body>
 <header> <h1>Dein Umrechner für Zahlensysteme</h1> </header>
 
@@ -30,87 +35,53 @@
 </html>
 
 <?php
+// Berechnung aus dem Dezimalsystem
+function DezBerechnung($ZSystem, $zahl1, $Ausgabesys){
+    $i = 0;
+    $zzw = $zahl1;
+    while ($zzw > 0) {
+        $Rest = $zzw%$ZSystem;
+        $zzw = intdiv($zzw, $ZSystem);
+        $Rechne[$i] = $Rest;
+        $i ++; 
+    }
+    $Ausgabe = array_reverse($Rechne);
+    echo $zahl1." als ".$Ausgabesys." beträgt: ";
+    for($i = 0; $i < count($Ausgabe); $i++) {
+        echo $Ausgabe[$i];
+    }
+    echo "<br>";   
+}
+function Hex_Umwandlung($Ausgabe){
+
+    $HexaArray = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
+
+}    
 
 $zahl1 = $_POST["eingabe"];    
-$i = 0;
 $zahl = 0;
 
 // Eingabe Dezimal
 if($_POST["EingabeSys"] === "dez"){
-
     // Umrechnung nach Binär
     if (isset($_POST["nachbin"])){
-        $zzw = $zahl1;
-        while ($zzw > 0) {
-            $Rest = $zzw%2;
-            $zzw = intdiv($zzw, 2);
-            $Rechnebin[$i] = $Rest;
-            $i = $i + 1;
-        }
-
-        $Ausgabebin = array_reverse($Rechnebin);
-        echo $zahl1." als Binärzahl beträgt: ";
-        for($i = 0; $i < count($Ausgabebin); $i++) {
-            echo $Ausgabebin[$i];
-        }
-        echo "<br>";
+        $ZSystem = 2;
+        $Ausgabesys = "Binärwert";
+        DezBerechnung($ZSystem, $zahl1, $Ausgabesys);
     }
 
     // Umrechnung in Oktal
     if (isset($_POST["nachokt"])){
-        $zzw = $zahl1;
-        while ($zzw > 0) {
-            $Rest = $zzw%8;
-            $zzw = intdiv($zzw, 8);
-            $Rechneokt[$i] = $Rest;
-            $i = $i + 1;
-        }
-
-        $Ausgabeokt = array_reverse($Rechneokt);
-        echo $zahl1." als Oktalzahl beträgt: ";
-        for($i = 0; $i < count($Ausgabeokt); $i++) {
-            echo $Ausgabeokt[$i];
-        }
-        echo "<br>";
+        $ZSystem = 8;
+        $Ausgabesys = "Oktalwert";
+        DezBerechnung($ZSystem,$zahl1, $Ausgabesys);
     }
 
     // Umrechnung in Hexadezimal
     if (isset($_POST["nachhex"])){
-        $zzw = $zahl1;
-        while ($zzw > 0) {
-            $Rest = $zzw%16;
-            $zzw = intdiv($zzw, 16);
-            $Rechnehex[$i] = $Rest;
-            $i = $i + 1;
-        }
-
-        $Ausgabehex = array_reverse($Rechnehex);
-        echo $zahl1." als Hexadezimal beträgt: ";
-        for($i = 0; $i < count($Ausgabehex); $i++) {
-            switch ($Ausgabehex[$i]){
-                case 10:
-                    echo "A";
-                    break;
-                case 11:
-                    echo "B";
-                    break;
-                case 12:
-                    echo "C";
-                    break;
-                case 13:
-                    echo "D";
-                    break;
-                case 14:
-                    echo "E";
-                    break;
-                case 15:
-                    echo "F";
-                    break;            
-                default:
-                    echo $Ausgabehex[$i];
-            }    
-        }
-        echo "<br>";
+        $ZSystem = 16;
+        $Ausgabesys = "Hexadezimalwert";
+        DezBerechnung($ZSystem,$zahl1, $Ausgabesys);
     }
 }
 
