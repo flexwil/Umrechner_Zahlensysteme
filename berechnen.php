@@ -48,8 +48,9 @@ function DezBerechnung($ZSystem, $zahl1, $Ausgabesys){
     $Ausgabe = array_reverse($Rechne);
     if ($ZSystem === 16){
         foreach ($Ausgabe as $key => $HexAusgabe){
-            echo Hex_Umwandlung($HexAusgabe);
+            echo $zahl1." als ".$Ausgabesys." beträgt: ".Hex_Umwandlung($HexAusgabe);
         }
+        echo "<br>";
     }
     else{        
         echo $zahl1." als ".$Ausgabesys." beträgt: ";
@@ -59,6 +60,7 @@ function DezBerechnung($ZSystem, $zahl1, $Ausgabesys){
         echo "<br>";
     }   
 }
+// Array zur Umwandlung in Hexadezimal
 function Hex_Umwandlung($Ausgabe){
     $HexArray = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
     return $HexArray[$Ausgabe];
