@@ -46,16 +46,22 @@ function DezBerechnung($ZSystem, $zahl1, $Ausgabesys){
         $i ++; 
     }
     $Ausgabe = array_reverse($Rechne);
-    echo $zahl1." als ".$Ausgabesys." beträgt: ";
-    for($i = 0; $i < count($Ausgabe); $i++) {
-        echo $Ausgabe[$i];
+    if ($ZSystem === 16){
+        foreach ($Ausgabe as $key => $HexAusgabe){
+            echo Hex_Umwandlung($HexAusgabe);
+        }
     }
-    echo "<br>";   
+    else{        
+        echo $zahl1." als ".$Ausgabesys." beträgt: ";
+        for($i = 0; $i < count($Ausgabe); $i++) {
+            echo $Ausgabe[$i];
+        }
+        echo "<br>";
+    }   
 }
 function Hex_Umwandlung($Ausgabe){
-
-    $HexaArray = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
-
+    $HexArray = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
+    return $HexArray[$Ausgabe];
 }    
 
 $zahl1 = $_POST["eingabe"];    
