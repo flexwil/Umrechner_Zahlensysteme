@@ -47,8 +47,9 @@ function DezBerechnung($ZSystem, $zahl1, $Ausgabesys){
     }
     $Ausgabe = array_reverse($Rechne);
     if ($ZSystem === 16){
+        echo $zahl1." als ".$Ausgabesys." beträgt: ";
         foreach ($Ausgabe as $key => $HexAusgabe){
-            echo $zahl1." als ".$Ausgabesys." beträgt: ".Hex_Umwandlung($HexAusgabe);
+            echo Hex_Umwandlung($HexAusgabe);
         }
         echo "<br>";
     }
@@ -66,44 +67,50 @@ function Hex_Umwandlung($Ausgabe){
     return $HexArray[$Ausgabe];
 }    
 
-$zahl1 = $_POST["eingabe"];    
+if (isset($_POST["eingabe"])) {
+    $zahl1 = $_POST["eingabe"]; 
+   }
+  
 $zahl = 0;
 
 // Eingabe Dezimal
-if($_POST["EingabeSys"] === "dez"){
+if (isset($_POST["EingabeSys"])){
+    if ($_POST["EingabeSys"]=== "dez"){
     // Umrechnung nach Binär
-    if (isset($_POST["nachbin"])){
-        $ZSystem = 2;
-        $Ausgabesys = "Binärwert";
-        DezBerechnung($ZSystem, $zahl1, $Ausgabesys);
-    }
+        if (isset($_POST["nachbin"])){
+            $ZSystem = 2;
+            $Ausgabesys = "Binärwert";
+            DezBerechnung($ZSystem, $zahl1, $Ausgabesys);
+        }
 
-    // Umrechnung in Oktal
-    if (isset($_POST["nachokt"])){
-        $ZSystem = 8;
-        $Ausgabesys = "Oktalwert";
-        DezBerechnung($ZSystem,$zahl1, $Ausgabesys);
-    }
+        // Umrechnung in Oktal
+        if (isset($_POST["nachokt"])){
+            $ZSystem = 8;
+            $Ausgabesys = "Oktalwert";
+            DezBerechnung($ZSystem,$zahl1, $Ausgabesys);
+        }
 
-    // Umrechnung in Hexadezimal
-    if (isset($_POST["nachhex"])){
-        $ZSystem = 16;
-        $Ausgabesys = "Hexadezimalwert";
-        DezBerechnung($ZSystem,$zahl1, $Ausgabesys);
-    }
+        // Umrechnung in Hexadezimal
+        if (isset($_POST["nachhex"])){
+            $ZSystem = 16;
+            $Ausgabesys = "Hexadezimalwert";
+            DezBerechnung($ZSystem,$zahl1, $Ausgabesys);
+        }
+    }        
 }
 
 // Eingabe Binär
-if($_POST["EingabeSys"] === "bin"){
-    $bin = str_split($zahl1);
-    $bin = array_reverse($bin);
+if (isset($_POST["EingabeSys"])){ 
+   if($_POST["EingabeSys"] === "bin"){
+        $bin = str_split($zahl1);
+        $bin = array_reverse($bin);
 
-    for($i = 0; $i < count($bin); $i++) {
-        $zwischen = $bin[$i]*2**$i;
-        echo $zwischen.", ";
-        echo $zahl = $zahl+$zwischen;
-        echo "<br>";
-}
-
+        for($i = 0; $i < count($bin); $i++) {
+            $zwischen = $bin[$i]*2**$i;
+            echo $zwischen.", ";
+            echo $zahl = $zahl+$zwischen;
+            echo "<br>";
+        }
+    }
 }
 ?>
