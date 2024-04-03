@@ -46,6 +46,7 @@ function DezBerechnung($ZSystem, $zahl1, $Ausgabesys){
         $i ++; 
     }
     $Ausgabe = array_reverse($Rechne);
+   
     if ($ZSystem === 16){
         echo $zahl1." als ".$Ausgabesys." beträgt: ";
         foreach ($Ausgabe as $key => $HexAusgabe){
@@ -78,7 +79,7 @@ if (isset($_POST["EingabeSys"])){
     if ($_POST["EingabeSys"]=== "dez"){
     // Umrechnung nach Binär
         if (isset($_POST["nachbin"])){
-            $ZSystem = 2;
+            $ZSystem = 4;
             $Ausgabesys = "Binärwert";
             DezBerechnung($ZSystem, $zahl1, $Ausgabesys);
         }
@@ -104,13 +105,32 @@ if (isset($_POST["EingabeSys"])){
    if($_POST["EingabeSys"] === "bin"){
         $bin = str_split($zahl1);
         $bin = array_reverse($bin);
-
-        for($i = 0; $i < count($bin); $i++) {
-            $zwischen = $bin[$i]*2**$i;
-            echo $zwischen.", ";
-            echo $zahl = $zahl+$zwischen;
-            echo "<br>";
+    //Umrechnung nach dezimal 
+        if (isset($_POST["nachdez"])){
+            $Ausgabesys = "Dezimalwert";
+            for($i = 0; $i < count($bin); $i++) {
+                $zwischen = $bin[$i]*2**$i;
+                $zahl = $zahl+$zwischen;
+            } echo $zahl;
         }
+
+    //Umrechnung nach Oktal 
+    if (isset($_POST["nachokt"])){
+        $Ausgabesys = "Oktalwert";
+        $okt = array_chunk($bin,3);
+        $okt = array_reverse($okt);
+        for($i = 0; $i < count($okt); $i++) {
+            for($j=0; $j < count($okt[$i]); $j++){
+                $zwischen = $okt[$i][$j]*2**$j;
+                $zahl = $zahl+$zwischen;
+            }
+        echo $zahl;    
+        $zahl=0;
+        }
+        echo $zahl1." als ".$Ausgabesys." beträgt: ".$zahl;
+        echo "<br>"; 
+    }
+
     }
 }
 ?>
