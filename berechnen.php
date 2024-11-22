@@ -23,114 +23,74 @@
     </select>
     <br>
     <br>
-    <label for="AusgabeSys">In Welches System soll umgewandelt werden?</label><br>
-    <input type="checkbox" name="nachbin">Binär<br>
-    <input type="checkbox" name="nachdez">Dezimal<br>
-    <input type="checkbox" name="nachokt">Oktal<br>
-    <input type="checkbox" name="nachhex">Hexadezimal<br>
-    <br>
     <input value="Berechnen" type="submit">
 </form>
 </body>
 </html>
 
 <?php
-// Berechnung aus dem Dezimalsystem
-function DezBerechnung($ZSystem, $zahl1, $Ausgabesys){
-    $i = 0;
-    $zzw = $zahl1;
-    while ($zzw > 0) {
-        $Rest = $zzw%$ZSystem;
-        $zzw = intdiv($zzw, $ZSystem);
-        $Rechne[$i] = $Rest;
-        $i ++; 
+// Umwandlung Eingabewerte in Dezimal
+function convertToDecimal($input, $baseinput){
+    $decimal = 0;
+    $reverseInput = array_reverse(str_split($input));
+    for($i = 0; $i < count($reverseInput); $i++) {
+        $interim = $reverseInput[$i]*$baseinput**$i;
+        $decimal += $interim;
     }
-    $Ausgabe = array_reverse($Rechne);
-   
-    if ($ZSystem === 16){
-        echo $zahl1." als ".$Ausgabesys." beträgt: ";
-        foreach ($Ausgabe as $key => $HexAusgabe){
-            echo Hex_Umwandlung($HexAusgabe);
-        }
-        echo "<br>";
-    }
-    else{        
-        echo $zahl1." als ".$Ausgabesys." beträgt: ";
-        for($i = 0; $i < count($Ausgabe); $i++) {
-            echo $Ausgabe[$i];
-        }
-        echo "<br>";
-    }   
+    return $decimal;
 }
+// Umwandlung der Dezimalzahl in andere Zahlensysteme
+function convertFromDecimal($decimal, $base){
+        $result = [];
+        while ($decimal > 0) {
+            $result[] = $decimal%$base;
+            $decimal = intdiv($decimal, $base);           
+        }
+        return array_reverse($result);
+    }
+
 // Array zur Umwandlung in Hexadezimal
-function Hex_Umwandlung($Ausgabe){
+function convertToHexa($Ausgabe){
     $HexArray = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
+    
     return $HexArray[$Ausgabe];
 }    
+// Array für Basis der Zahlensysteme
+$numberSystems = [
+    "bin" => 2,
+    "okt" => 8,
+    "dez" => 10,
+    "hex" => 16,
+];
 
-if (isset($_POST["eingabe"])) {
-    $zahl1 = $_POST["eingabe"]; 
-   }
-  
-$zahl = 0;
+//Eingabeverarbeitung
+if (isset($_POST["eingabe"]) && isset($_POST["EingabeSys"])) {
+    $input = $_POST["eingabe"];
+    $inputSystem = $_POST["EingabeSys"];
+    $baseinput = $numberSystems[$inputSystem];
+    if($baseinput !== "dez"){
+        if($baseinput === "hex"){
 
-// Eingabe Dezimal
-if (isset($_POST["EingabeSys"])){
-    if ($_POST["EingabeSys"]=== "dez"){
-    // Umrechnung nach Binär
-        if (isset($_POST["nachbin"])){
-            $ZSystem = 4;
-            $Ausgabesys = "Binärwert";
-            DezBerechnung($ZSystem, $zahl1, $Ausgabesys);
         }
+        $convertedDecimal = convertToDecimal($input, $baseinput);
+    }
 
-        // Umrechnung in Oktal
-        if (isset($_POST["nachokt"])){
-            $ZSystem = 8;
-            $Ausgabesys = "Oktalwert";
-            DezBerechnung($ZSystem,$zahl1, $Ausgabesys);
+    foreach($numberSystems as $system => $base){
+        $output = convertFromDecimal($convertedDecimal, $base);
+        if($base !== 16){
+            echo $input." als ".$system." beträgt: ".implode("",$output)."<br>";
         }
-
-        // Umrechnung in Hexadezimal
-        if (isset($_POST["nachhex"])){
-            $ZSystem = 16;
-            $Ausgabesys = "Hexadezimalwert";
-            DezBerechnung($ZSystem,$zahl1, $Ausgabesys);
-        }
-    }        
-}
-
-// Eingabe Binär
-if (isset($_POST["EingabeSys"])){ 
-   if($_POST["EingabeSys"] === "bin"){
-        $bin = str_split($zahl1);
-        $bin = array_reverse($bin);
-    //Umrechnung nach dezimal 
-        if (isset($_POST["nachdez"])){
-            $Ausgabesys = "Dezimalwert";
-            for($i = 0; $i < count($bin); $i++) {
-                $zwischen = $bin[$i]*2**$i;
-                $zahl = $zahl+$zwischen;
-            } echo $zahl;
-        }
-
-    //Umrechnung nach Oktal 
-    if (isset($_POST["nachokt"])){
-        $Ausgabesys = "Oktalwert";
-        $okt = array_chunk($bin,3);
-        $okt = array_reverse($okt);
-        for($i = 0; $i < count($okt); $i++) {
-            for($j=0; $j < count($okt[$i]); $j++){
-                $zwischen = $okt[$i][$j]*2**$j;
-                $zahl = $zahl+$zwischen;
+        else{
+            echo $input." als ".$system." beträgt: ";
+            foreach ($output as $key => $HexAusgabe){
+                echo convertToHexa($HexAusgabe);
             }
-        echo $zahl;    
-        $zahl=0;
-        }
-        echo $zahl1." als ".$Ausgabesys." beträgt: ".$zahl;
-        echo "<br>"; 
+        }        
     }
+   }
 
-    }
-}
+$interim = 0;  
+
+
+        
 ?>
