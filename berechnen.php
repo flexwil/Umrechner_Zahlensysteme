@@ -46,14 +46,21 @@ function convertFromDecimal($decimal, $base){
             $result[] = $decimal%$base;
             $decimal = intdiv($decimal, $base);           
         }
-        return array_reverse($result);
+        $result = array_reverse($result);
+        if($base === 16) {return convertToHexa($result);}
+        else {return $result;}
     }
 
 // Array zur Umwandlung in Hexadezimal
-function convertToHexa($Ausgabe){
-    $HexArray = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
-    
-    return $HexArray[$Ausgabe];
+function convertToHexa($result){
+    $hexaArray = ["0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"];
+    $convertedToHexa = [];
+    $i = 0;
+    foreach ($result as $key => $hexaValue){
+        $convertedToHexa[$i] = $hexaArray[$hexaValue];
+        $i++;
+    }
+    return $convertedToHexa;
 }    
 // Array für Basis der Zahlensysteme
 $numberSystems = [
@@ -70,27 +77,15 @@ if (isset($_POST["eingabe"]) && isset($_POST["EingabeSys"])) {
     $baseinput = $numberSystems[$inputSystem];
     if($baseinput !== "dez"){
         if($baseinput === "hex"){
-
+            
         }
         $convertedDecimal = convertToDecimal($input, $baseinput);
     }
 
     foreach($numberSystems as $system => $base){
         $output = convertFromDecimal($convertedDecimal, $base);
-        if($base !== 16){
-            echo $input." als ".$system." beträgt: ".implode("",$output)."<br>";
-        }
-        else{
-            echo $input." als ".$system." beträgt: ";
-            foreach ($output as $key => $HexAusgabe){
-                echo convertToHexa($HexAusgabe);
-            }
-        }        
+            echo $input." als ".$system." beträgt: ".implode("",$output)."<br>";    
     }
    }
-
-$interim = 0;  
-
-
-        
+      
 ?>
